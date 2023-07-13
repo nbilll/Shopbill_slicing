@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopbils/state_util.dart';
+
 import '../view/wallet_view.dart';
 
 class WalletController extends State<WalletView> {

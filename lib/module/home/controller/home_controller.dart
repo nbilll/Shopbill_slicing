@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shopbils/service/categoryService/category_service.dart';
-import 'package:shopbils/state_util.dart';
+
 import '../view/home_view.dart';
 
 class HomeController extends State<HomeView> {
@@ -190,4 +189,34 @@ class HomeController extends State<HomeView> {
     indexCategory = newIndex;
     setState(() {});
   }
+
+  bool textField = false;
+  viewTextfield() {
+    textField = true;
+    if (textField == true) {
+      Positioned(
+        top: 0,
+        bottom: 0,
+        right: 20,
+        child: Expanded(
+          child: TextFormField(
+            initialValue: null,
+            decoration: const InputDecoration.collapsed(
+              filled: true,
+              fillColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              hintText: "Search",
+            ),
+            onFieldSubmitted: (value) {},
+          ),
+        ),
+      );
+    } else {}
+  }
+
+  disableTextfield() {
+    textField = false;
+  }
+
+  var valueSearch = "";
 }

@@ -14,14 +14,7 @@ class DasboardView extends StatefulWidget {
       child: Scaffold(
         body: IndexedStack(
           index: controller.selectedIndex,
-          children: [
-            HomeView(),
-            Container(
-              color: Colors.green,
-            ),
-            WalletView(),
-            SettingsView()
-          ],
+          children: [HomeView(), HomeView(), WalletView(), SettingsView()],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: controller.selectedIndex,

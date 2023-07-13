@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "346906044210",
+    "project_id": "shopbil",
+    "storage_bucket": "shopbil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346906044210:android:6bd7236695b1a3e9e3192b",
+        "android_client_info": {
+          "package_name": "com.example.shopbils"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346906044210-hqtgb846khk59e8icblgb54d3a412o01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmBlMwxopfwxRQPAtM7AKYvocIERicnMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346906044210-1jq79uov39t6r5d2vg5rasj4teg783e8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "346906044210-i6b02dh6qjm8hppgn5l8e8ojm1ual8am.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shopbils"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

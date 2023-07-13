@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopbils/core.dart';
 import '../controller/home_controller.dart';
@@ -7,6 +8,8 @@ class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
   Widget build(context, HomeController controller) {
+    bool viewTextField = controller.textField;
+
     controller.view = this;
 
     return Scaffold(
@@ -14,49 +17,114 @@ class HomeView extends StatefulWidget {
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.all(10),
                 child: Row(
                   children: [
-                    Container(
-                      width: 280,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6.0,
-                        horizontal: 12.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.grey[500],
+                    Column(
+                      children: [
+                        Container(
+                          width: 280,
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6.0,
+                            horizontal: 12.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(20.0),
                             ),
                           ),
-                          Expanded(
-                            child: TextFormField(
-                              initialValue: null,
-                              decoration: InputDecoration.collapsed(
-                                filled: true,
-                                fillColor: Colors.transparent,
-                                hintText: "Cari apa cantik ?",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[500],
+                          child: Row(
+                            children: [
+                              if (viewTextField == false)
+                                Icon(
+                                  Icons.search,
+                                  size: 24.0,
+                                  color: Colors.grey[700],
                                 ),
-                                hoverColor: Colors.transparent,
+                              if (viewTextField == true)
+                                InkWell(
+                                  onTap: () => controller.disableTextfield(),
+                                  child: const Icon(
+                                    Icons.arrow_back_outlined,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              const SizedBox(
+                                width: 10.0,
                               ),
-                              onFieldSubmitted: (value) {},
-                            ),
+                              Expanded(
+                                child: Builder(builder: (context) {
+                                  List images = [
+                                    "Skincare Terbaru",
+                                    "Knalpot Ninja R",
+                                    "Seragam Sekolah",
+                                    "Perabotan rumah tangga"
+                                  ];
+
+                                  return Stack(
+                                    children: [
+                                      if (viewTextField == false)
+                                        InkWell(
+                                          onTap: () =>
+                                              controller.viewTextfield(),
+                                          child: CarouselSlider(
+                                            options: CarouselOptions(
+                                              height: 200.0,
+                                              autoPlay: true,
+                                              enlargeCenterPage: true,
+                                              scrollDirection: Axis.vertical,
+                                            ),
+                                            items: images.map((texturl) {
+                                              return Builder(
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Text(
+                                                    "$texturl",
+                                                    style: TextStyle(
+                                                      fontSize: 14.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.orange,
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      if (viewTextField == true)
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFormField(
+                                                initialValue: null,
+                                                decoration:
+                                                    const InputDecoration
+                                                        .collapsed(
+                                                  filled: true,
+                                                  fillColor: Colors.transparent,
+                                                  hoverColor:
+                                                      Colors.transparent,
+                                                  hintText: "",
+                                                ),
+                                                onFieldSubmitted: (value) {},
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                    ],
+                                  );
+                                }),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       width: 5.0,
@@ -84,6 +152,19 @@ class HomeView extends StatefulWidget {
                     ),
                   ],
                 ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  "Cari apa kak ${FirebaseAuth.instance.currentUser!.displayName ?? ""}",
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
               ),
               Builder(builder: (context) {
                 List images = [
@@ -159,52 +240,54 @@ class HomeView extends StatefulWidget {
                   ],
                 );
               }),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                controller: ScrollController(),
-                child: Row(
-                  children: List.generate(
-                    controller.categoryList.length,
-                    (index) {
-                      var item = controller.categoryList[index];
-                      bool selected = controller.indexCategory == index;
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () => controller.updateCategory(index),
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0),
-                                    ),
-                                    color: selected
-                                        ? Colors.black
-                                        : Color(0xfff6f6f6)),
-                                child: AnimatedRotation(
-                                  turns: 1 / 160,
-                                  duration: Duration(milliseconds: 200),
-                                  curve: Curves.easeInOut,
-                                  child: Icon(item["icon"],
-                                      size: 24.0,
+              Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: ScrollController(),
+                  child: Row(
+                    children: List.generate(
+                      controller.categoryList.length,
+                      (index) {
+                        var item = controller.categoryList[index];
+                        bool selected = controller.indexCategory == index;
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () => controller.updateCategory(index),
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.0),
+                                      ),
                                       color: selected
-                                          ? Colors.white
-                                          : Color(0xff6a696e)),
+                                          ? Colors.black
+                                          : Color(0xfff6f6f6)),
+                                  child: AnimatedRotation(
+                                    turns: 1 / 160,
+                                    duration: Duration(milliseconds: 200),
+                                    curve: Curves.easeInOut,
+                                    child: Icon(item["icon"],
+                                        size: 24.0,
+                                        color: selected
+                                            ? Colors.white
+                                            : Color(0xff6a696e)),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              item["title"],
-                              style: TextStyle(
-                                fontSize: 12.0,
+                              Text(
+                                item["title"],
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
