@@ -72,6 +72,36 @@ class LoginController extends GetxController {
     }
   }
 
+  doLoginsGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+      ],
+    );
+
+    try {
+      await googleSignIn.disconnect();
+    } catch (_) {}
+
+    try {
+      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      var userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      debugPrint("userCredential: $userCredential");
+      //TODO: on login success
+      //------------------
+      Get.offAll(DasboardView());
+    } catch (_) {
+      print("gagal nih booss");
+    }
+  }
+
   doLoginAnonymously() async {
     try {
       await FirebaseAuth.instance.signInAnonymously();

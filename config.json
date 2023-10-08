@@ -6,9 +6,13 @@
         "wallet",
         "settings",
         "login",
-        "Logins"
+        "Logins",
+        "product_detail",
+        "splash_screen"
     ],
     "module_directory_name": "module",
     "experimental_mode": false,
-    "unfreezed": true
+    "learning_mode": false,
+    "unfreezed": true,
+    "use_cubit": false
 }

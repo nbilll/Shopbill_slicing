@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:shopbils/core.dart';
 import '../controller/home_controller.dart';
 
@@ -334,6 +336,9 @@ class HomeView extends StatefulWidget {
                         bool selected = item["selected"] == true;
                         return InkWell(
                           onDoubleTap: () => controller.updateFavorite(index),
+                          onTap: () => Get.to(ProductDetailView(
+                            item: item,
+                          )),
                           child: Expanded(
                             child: Container(
                               child: Column(
